@@ -24,6 +24,6 @@ https://www.randombrick.de/raspberry-pi-2-edimax-wlan-einrichten/
     $ sudo adafruit-pitft-helper -t 28r
     
 ### Bootstrap development environment
-    $ sudo apt-get install vim-nox git cmake tmux clang-format-3.9 clang-tidy-3.9
+    $ sudo apt-get install vim-nox git cmake tmux clang-format-3.9 clang-tidy-3.9 libcairo2-dev
     $ git clone https://github.com/NewProggie/Dev-Utils.git
     $ cd Dev-Utils && bash init_dotfiles.sh
