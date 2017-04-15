@@ -10,6 +10,7 @@
 #include <iostream>
 #include <linux/fb.h>
 #include <memory>
+#include <random>
 #include <string>
 #include <sys/ioctl.h>
 #include <sys/mman.h>
@@ -20,8 +21,8 @@
 #define SCOPE_EXIT(code) \
     auto STRING_JOIN2(scope_exit_, __LINE__) = MakeScopeExit([=]() { code; })
 
-template<typename T, typename... Args>
-std::unique_ptr<T> make_unique(Args&&... args) {
+template <typename T, typename... Args>
+std::unique_ptr<T> make_unique(Args &&... args) {
     return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
 
@@ -90,7 +91,7 @@ cairo_surface_t *cairo_linuxfb_surface_create(const std::string &fb_name) {
         std::exit(2);
     }
 
-    auto* surface = cairo_image_surface_create_for_data(
+    auto *surface = cairo_image_surface_create_for_data(
         device->fb_data, CAIRO_FORMAT_RGB16_565, device->var_info.xres,
         device->var_info.yres,
         cairo_format_stride_for_width(CAIRO_FORMAT_RGB16_565,
@@ -112,12 +113,34 @@ int main(int argc, char *argv[]) {
     cairo_paint(cr);
     cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
 
-    cairo_select_font_face(cr, "serif", CAIRO_FONT_SLANT_NORMAL,
-                           CAIRO_FONT_WEIGHT_BOLD);
-    cairo_set_font_size(cr, 22.0);
-    cairo_set_source_rgb(cr, 0.5, 1.0, 0.5);
-    cairo_move_to(cr, 50.0, 90.0);
-    cairo_show_text(cr, "Some shiny stuff!");
+    constexpr auto bs = 10;
+
+    const int logo_len_x = 8;
+    const int logo_len_y = 6;
+    int start_x = 2;
+    int start_y = 2;
+    int offset_m = start_y * bs;
+    for (int x = start_x * bs; x < (start_x + logo_len_x) * bs; x += bs) {
+        for (int y = start_y * bs; y < (start_y + logo_len_y) * bs; y += bs) {
+            // Draw background
+            cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+            cairo_rectangle(cr, x, y, bs - 1, bs - 1);
+            cairo_fill(cr);
+            // Draw edges
+            cairo_set_source_rgb(cr, 1.0, 0.0, 0.0);
+            cairo_rectangle(cr, start_x * bs, y, bs - 1, bs - 1);
+            cairo_rectangle(cr, (start_x + logo_len_x-1) * bs, y, bs - 1, bs - 1);
+            cairo_fill(cr);
+        }
+        // Draw center of M
+        cairo_rectangle(cr, x, offset_m, bs - 1, bs - 1);
+        cairo_rectangle(cr, x, offset_m + bs, bs - 1, bs - 1);
+        cairo_fill(cr);
+        if ((start_x + 1) * bs > x || x >= (start_x + logo_len_x-2) * bs) { continue; }
+        else if (x < ((start_x + logo_len_x / 2)-1) * bs) { offset_m += bs; }
+        else if (x > ((start_x + logo_len_x / 2)-1) * bs) { offset_m -= bs; }
+
+    }
 
     return 0;
 }
