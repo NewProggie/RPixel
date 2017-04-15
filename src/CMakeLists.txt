@@ -2,7 +2,9 @@
 # Use of this source code is governed by a Apache license that can be
 # found in the LICENSE file in the top directory.
 
-add_executable(rpixel main.cc)
+add_executable(rpixel
+  render/logos.h
+  main.cc)
 
 target_include_directories(rpixel
   PRIVATE ${CAIRO_INCLUDE_DIRS})

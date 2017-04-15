@@ -15,6 +15,7 @@
 #include <sys/ioctl.h>
 #include <sys/mman.h>
 #include <unistd.h>
+#include "render/logos.h"
 
 #define STRING_JOIN2(arg1, arg2) DO_STRING_JOIN2(arg1, arg2)
 #define DO_STRING_JOIN2(arg1, arg2) arg1##arg2
@@ -114,33 +115,7 @@ int main(int argc, char *argv[]) {
     cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
 
     constexpr auto bs = 10;
-
-    const int logo_len_x = 8;
-    const int logo_len_y = 6;
-    int start_x = 2;
-    int start_y = 2;
-    int offset_m = start_y * bs;
-    for (int x = start_x * bs; x < (start_x + logo_len_x) * bs; x += bs) {
-        for (int y = start_y * bs; y < (start_y + logo_len_y) * bs; y += bs) {
-            // Draw background
-            cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
-            cairo_rectangle(cr, x, y, bs - 1, bs - 1);
-            cairo_fill(cr);
-            // Draw edges
-            cairo_set_source_rgb(cr, 1.0, 0.0, 0.0);
-            cairo_rectangle(cr, start_x * bs, y, bs - 1, bs - 1);
-            cairo_rectangle(cr, (start_x + logo_len_x-1) * bs, y, bs - 1, bs - 1);
-            cairo_fill(cr);
-        }
-        // Draw center of M
-        cairo_rectangle(cr, x, offset_m, bs - 1, bs - 1);
-        cairo_rectangle(cr, x, offset_m + bs, bs - 1, bs - 1);
-        cairo_fill(cr);
-        if ((start_x + 1) * bs > x || x >= (start_x + logo_len_x-2) * bs) { continue; }
-        else if (x < ((start_x + logo_len_x / 2)-1) * bs) { offset_m += bs; }
-        else if (x > ((start_x + logo_len_x / 2)-1) * bs) { offset_m -= bs; }
-
-    }
+    rpixel::DrawGMailLogo(cr, bs, 7*bs, 7*bs);
 
     return 0;
 }
