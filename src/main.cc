@@ -3,37 +3,9 @@
 // found in the LICENSE file in the top directory.
 
 #include <cairo/cairo.h>
-#include <cstdlib>
-#include <ctime>
-
-#include <functional>
-#include <iostream>
-#include <memory>
-#include <random>
-#include <string>
-
+#include "base/utils.h"
 #include "display/surface.h"
 #include "render/logos.h"
-
-#define STRING_JOIN2(arg1, arg2) DO_STRING_JOIN2(arg1, arg2)
-#define DO_STRING_JOIN2(arg1, arg2) arg1##arg2
-#define SCOPE_EXIT(code) \
-    auto STRING_JOIN2(scope_exit_, __LINE__) = MakeScopeExit([=]() { code; })
-
-template <typename F>
-struct ScopeExit {
-    ScopeExit(F f) : f_(f){};
-    ~ScopeExit() {
-        f_();
-    }
-    F f_;
-};
-
-template <typename F>
-ScopeExit<F> MakeScopeExit(F f) {
-    return ScopeExit<F>(f);
-};
-
 
 int main(int argc, char *argv[]) {
     auto *surface = rpixel::display::CreateCairoSurface();
@@ -47,7 +19,7 @@ int main(int argc, char *argv[]) {
     cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
 
     constexpr auto bs = 10;
-    rpixel::DrawGMailLogo(cr, bs, 3*bs, 7*bs);
+    rpixel::DrawGMailLogo(cr, bs, 3*bs, 4*bs);
     cairo_surface_write_to_png (surface, "rpixel.png");
 
     return 0;

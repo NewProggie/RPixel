@@ -7,7 +7,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(BASE_SOURCE_FILES
     macros.h
     environment.cc
-    environment.h)
+    environment.h utils.h)
 
 add_library(rpixel_base OBJECT ${BASE_SOURCE_FILES})
 add_library(rpixel::base ALIAS rpixel_base)
