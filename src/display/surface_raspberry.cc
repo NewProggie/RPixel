@@ -3,12 +3,14 @@
 // found in the LICENSE file in the top directory.
 
 #include "display/surface.h"
+#include "base/macros.h"
 #include <cairo/cairo.h>
 #include <fcntl.h>
 #include <linux/fb.h>
 #include <sys/ioctl.h>
 #include <sys/mman.h>
 #include <unistd.h>
+#include <iostream>
 
 namespace rpixel {
 namespace display {
@@ -33,7 +35,7 @@ void cairo_linuxfb_surface_destroy(void *device) {
 }
 
 cairo_surface_t *CreateCairoSurface() {
-    auto device = make_unique<CairoLinuxFBDevice>();
+    auto device = std::make_unique<CairoLinuxFBDevice>();
 
     // Open the file for reading and writing
     device->fb_fd = open("/dev/fb1", O_RDWR);

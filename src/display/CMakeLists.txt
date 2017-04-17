@@ -4,7 +4,8 @@
 
 set(DISPLAY_SOURCE_FILES
     surface.h
-    surface.cc)
+    $<$<PLATFORM_ID:Linux>:surface_raspberry.cc>
+    $<$<PLATFORM_ID:Darwin>:surface.cc>)
 
 add_library(rpixel_display OBJECT ${DISPLAY_SOURCE_FILES})
 add_library(rpixel::display ALIAS rpixel_display)
