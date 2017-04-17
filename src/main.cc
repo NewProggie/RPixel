@@ -10,6 +10,7 @@
 int main(int argc, char *argv[]) {
     auto *surface = rpixel::display::CreateCairoSurface();
     SCOPE_EXIT(cairo_surface_destroy(surface));
+
     auto *cr = cairo_create(surface);
     SCOPE_EXIT(cairo_destroy(cr));
 
