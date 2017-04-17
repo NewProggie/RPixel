@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
     SCOPE_EXIT(cairo_surface_destroy(surface));
 
     auto *cr = cairo_create(surface);
-    SCOPE_EXIT(cairo_destroy(cr));
+SCOPE_EXIT(cairo_destroy(cr));
 
     // Clear canvas before drawing
     cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
