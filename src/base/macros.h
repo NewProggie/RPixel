@@ -7,37 +7,27 @@
 
 #include <memory>
 
-#if __cplusplus < 201402L
-namespace std {
-template<class T> struct _Unique_if {
-  typedef unique_ptr<T> _Single_object;
-};
-
-template<class T> struct _Unique_if<T[]> {
-  typedef unique_ptr<T[]> _Unknown_bound;
-};
-
-template<class T, size_t N> struct _Unique_if<T[N]> {
-  typedef void _Known_bound;
-};
-
-template<class T, class... Args>
-typename _Unique_if<T>::_Single_object
+#if __cplusplus >= 201402L
+usig std::make_unique;
+#else
+template<typename T, typename... Args>
+typename std::enable_if<!std::is_array<T>::value, std::unique_ptr<T>>::type
 make_unique(Args&&... args) {
-    return unique_ptr<T>(new T(std::forward<Args>(args)...));
+    return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
 
-template<class T>
-typename _Unique_if<T>::_Unknown_bound
-make_unique(size_t n) {
-    typedef typename remove_extent<T>::type U;
-    return unique_ptr<T>(new U[n]());
+/// Allows 'make_unique<T[]>(10)'. (N3690 s20.9.1.4 p3-4)
+template<typename T>
+typename std::enable_if<std::is_array<T>::value, std::unique_ptr<T>>::type
+make_unique(const size_t n) {
+    return std::unique_ptr<T>(new typename std::remove_extent<T>::type[n]());
 }
 
-template<class T, class... Args>
-typename _Unique_if<T>::_Known_bound
+/// Disallows 'make_unique<T[10]>()'. (N3690 s20.9.1.4 p5)
+template<typename T, typename... Args>
+typename std::enable_if<
+    std::extent<T>::value != 0, std::unique_ptr<T>>::type
 make_unique(Args&&...) = delete;
-}
 #endif
 
 #define DISALLOW_COPY_AND_ASSIGN(TypeName) \
