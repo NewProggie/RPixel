@@ -7,7 +7,15 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(BASE_SOURCE_FILES
     macros.h
     environment.cc
-    environment.h utils.h)
+    environment.h
+    utils.h
+    cmdline_flags.cc
+    cmdline_flags.h
+    integral_types.h
+    check.h
+    logging.h
+    logging.cc
+    string_util.h)
 
 add_library(rpixel_base OBJECT ${BASE_SOURCE_FILES})
 add_library(rpixel::base ALIAS rpixel_base)

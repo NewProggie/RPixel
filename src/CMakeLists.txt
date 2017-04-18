@@ -6,10 +6,12 @@ find_package(Cairo)
 
 add_subdirectory(base)
 add_subdirectory(display)
+add_subdirectory(render)
 
 add_library(rpixel
     $<TARGET_OBJECTS:rpixel::base>
-    $<TARGET_OBJECTS:rpixel::display>)
+    $<TARGET_OBJECTS:rpixel::display>
+    $<TARGET_OBJECTS:rpixel::render>)
 
 set_target_properties(rpixel PROPERTIES
     INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR})
@@ -24,8 +26,7 @@ target_include_directories(rpixel
 target_link_libraries(rpixel PUBLIC ${CAIRO_LIBRARIES})
 
 add_executable(run_pixel
-  render/logos.h
-  main.cc)
+    main.cc)
 
 set_target_properties(run_pixel PROPERTIES
     CXX_STANDARD 11
