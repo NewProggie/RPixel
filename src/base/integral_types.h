@@ -6,7 +6,6 @@
 #define RPIXEL_INTEGRAL_TYPES_H
 
 namespace rpixel {
-namespace base {
 
 // Following are basic integer type definitions for various platforms including
 // Windows, Mac and Linux
@@ -64,7 +63,7 @@ static const int32 kINT32min   = ((int32) ~0x7FFFFFFF);
 static const int32 kINT32max   = ((int32) 0x7FFFFFFF);
 static const int64 kINT64min   = ((int64) GG_LONGLONG(~0x7FFFFFFFFFFFFFFF));
 static const int64 kINT64max   = ((int64) GG_LONGLONG(0x7FFFFFFFFFFFFFFF));
-}
+
 }
 
 #endif // RPIXEL_INTEGRAL_TYPES_H

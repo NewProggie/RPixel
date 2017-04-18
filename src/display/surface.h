@@ -10,7 +10,7 @@
 namespace rpixel {
 namespace display {
 
-cairo_surface_t* CreateCairoSurface();
+cairo_surface_t* CreateCairoSurface(int width, int height);
 
 }
 }

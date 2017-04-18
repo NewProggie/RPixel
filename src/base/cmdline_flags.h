@@ -12,7 +12,6 @@
 #include <utility>
 
 namespace rpixel {
-namespace base {
 
 /// Macro for referencing flags
 #define FLAG(name) FLAGS_##name
@@ -32,6 +31,8 @@ namespace base {
 #define DEFINE_float(name, def_val, doc) float FLAG(name)        = (def_val)
 #define DEFINE_double(name, def_val, doc) double FLAG(name)      = (def_val)
 #define DEFINE_string(name, def_val, doc) std::string FLAG(name) = (def_val)
+
+namespace base {
 
 /// Parses |str| for a 16-bit unsigned integer and writes the result to |value|,
 /// if successful.

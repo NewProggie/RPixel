@@ -7,11 +7,11 @@
 namespace rpixel {
 namespace display {
 
-cairo_surface_t* CreateCairoSurface() {
-    auto *surface = cairo_image_surface_create(CAIRO_FORMAT_RGB16_565, 320, 240);
+cairo_surface_t* CreateCairoSurface(int width, int height) {
+    auto* surface =
+        cairo_image_surface_create(CAIRO_FORMAT_RGB16_565, width, height);
 
     return surface;
 }
-
 }
 }
